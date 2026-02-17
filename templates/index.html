@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero-card">
+  <div class="hero-left">
+    <p class="eyebrow">PAYDAY SALE NOW</p>
+    <h1>LET'S EXPLORE<br><span>UNIQUE</span> CLOTHES.</h1>
+    <p class="subtitle">Live for influential and innovative fashion.</p>
+    <button class="pill-btn primary">Shop now</button>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-wrapper">
+      <img src="{{ url_for('static', filename='images/prod1.png') }}" alt="Hero fashion model">
+    </div>
+  </div>
+</section>
+
+<section class="new-arrivals">
+  <div class="section-header">
+    <h2>New arrivals</h2>
+    <p class="muted">Handpicked outfits just dropped.</p>
+  </div>
+  <div id="arrival-grid" class="product-grid grid-5">
+    {% for p in products %}
+      <article class="product-card" 
+               data-id="{{ p['id'] }}" 
+               data-title="{{ p['title'] | lower }}" 
+               data-price="{{ '%.2f' % p['price'] }}">
+        <div class="product-img">
+          <img src="/{{ p['image'] }}" alt="{{ p['title'] }}">
+        </div>
+        <h3>{{ p['title'] }}</h3>
+        <p class="muted">{{ p['description'] }}</p>
+        <div class="product-meta">
+          <span class="price">₹ {{ '%.2f' % p['price'] }}</span>
+          <button class="pill-btn sm" onclick="addToCart({{ p['id'] }})">Add to cart</button>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="unique-feature">
+  <div class="unique-left">
+    <h2>Mood-based outfit picker <span class="badge">Unique</span></h2>
+    <p>Choose your current mood and we animate a recommended vibe. This is a playful feature to make your project stand out from Amazon & Flipkart.</p>
+    <div class="mood-buttons">
+      <button class="pill-btn sm ghost" data-mood="chill">Chill</button>
+      <button class="pill-btn sm ghost" data-mood="party">Party</button>
+      <button class="pill-btn sm ghost" data-mood="street">Street</button>
+    </div>
+  </div>
+  <div class="unique-right">
+    <div id="mood-preview" class="mood-preview">
+      <p class="mood-label">Tap a mood to preview ✨</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

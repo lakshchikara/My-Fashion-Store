@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="products-page-header">
+  <div>
+    <h2>All products</h2>
+    <p class="muted">Browse our full collection.</p>
+  </div>
+  <div class="products-controls">
+    <select id="products-sort" class="sort-select">
+      <option value="">Sort by</option>
+      <option value="low-high">Price: Low to High</option>
+      <option value="high-low">Price: High to Low</option>
+    </select>
+  </div>
+</section>
+
+<section class="products-section">
+  <div id="products-grid" class="product-grid grid-5">
+    {% for p in products %}
+      <article class="product-card" 
+               data-id="{{ p['id'] }}" 
+               data-title="{{ p['title'] | lower }}" 
+               data-price="{{ '%.2f' % p['price'] }}">
+        <div class="product-img">
+          <img src="/{{ p['image'] }}" alt="{{ p['title'] }}">
+        </div>
+        <h3>{{ p['title'] }}</h3>
+        <p class="muted">{{ p['description'] }}</p>
+        <div class="product-meta">
+          <span class="price">₹ {{ '%.2f' % p['price'] }}</span>
+          <button class="pill-btn sm" onclick="addToCart({{ p['id'] }})">Add to cart</button>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

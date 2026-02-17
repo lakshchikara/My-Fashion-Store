@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Fashion Store</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="page-bg"></div>
+  <div class="page-wrapper">
+    <header class="top-nav">
+      <div class="logo">FASHION</div>
+      <nav class="menu">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="#">Fashion</a>
+        <a href="#">Lifestyle</a>
+        <a href="{{ url_for('products_page') }}">Products</a>
+      </nav>
+      <div class="nav-actions">
+        <div class="search-box">
+          <input id="search-input" placeholder="Search clothes, brands..." />
+          <button id="voice-btn" title="Voice search">🎤</button>
+          <button id="search-btn">Search</button>
+        </div>
+
+        {% if email %}
+          <button id="profile-btn" class="pill-btn profile-pill">{{ email.split('@')[0] }}</button>
+        {% else %}
+          <a class="pill-btn ghost" href="{{ url_for('auth') }}">Login / Sign up</a>
+        {% endif %}
+
+        <button id="cart-btn" class="cart-btn">
+          🛒
+          <span id="cart-count" class="cart-count">0</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Profile popup -->
+    <div id="profile-popup" class="floating-popup hidden">
+      <div class="popup-inner">
+        <h3>Your profile</h3>
+        <p class="muted">Logged in as:</p>
+        <p class="profile-email">{{ email or 'Guest' }}</p>
+        {% if email %}
+          <button class="pill-btn full" onclick="window.location.href='{{ url_for('logout') }}'">Logout</button>
+        {% else %}
+          <button class="pill-btn full" onclick="window.location.href='{{ url_for('auth') }}'">Login / Sign up</button>
+        {% endif %}
+        <button class="text-btn" onclick="toggleProfile(false)">Close</button>
+      </div>
+    </div>
+
+    <!-- Cart popup -->
+    <div id="cart-popup" class="floating-popup hidden">
+      <div class="popup-inner cart-popup-inner">
+        <h3>Your cart</h3>
+        <div id="cart-items" class="cart-items"></div>
+        <div class="cart-footer">
+          <div class="total-line">
+            <span>Total:</span>
+            <span id="cart-total">$0.00</span>
+          </div>
+          
+          <form id="checkout-form" class="checkout-options">
+            <label><input type="radio" name="payment" value="card" checked> Card</label>
+            <label><input type="radio" name="payment" value="upi"> UPI</label>
+            <label><input type="radio" name="payment" value="cod"> COD</label>
+            <button type="submit" class="pill-btn full">Place order</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order placed animation -->
+    <div id="order-overlay" class="order-overlay hidden">
+      <div class="order-card">
+        <div class="checkmark">✓</div>
+        <h2>Order placed!</h2>
+        <p>Your stylish outfit is on its way ✨</p>
+      </div>
+    </div>
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <p>Join shopping community to get monthly promo</p>
+    </footer>
+
+    <div id="toast" class="toast hidden"></div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
